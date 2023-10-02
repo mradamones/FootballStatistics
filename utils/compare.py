@@ -1,6 +1,5 @@
 import pandas as pd
 from utils import get_data as gd
-import math
 
 
 def normalize(tab):
@@ -77,21 +76,21 @@ def similar_avg(tab, idx):
     return winner, min_diff
 
 
-mids = gd.get_mids()
-
-bellingham1, min_diff_1 = similar_manhattan(mids, 68)
-print(bellingham1)
-print("Lowest manhattan difference: " + str(100 * min_diff_1) + "%")
-
-bellingham2, min_diff_2 = similar_avg(mids, 68)
-print(bellingham2)
-print("Lowest average difference: " + str(100 * min_diff_2) + "%")
-
-bellingham3, min_diff_3 = similar_euclidean(mids, 68)
-print(bellingham3)
-print("Lowest euclidean difference: " + str(100 * min_diff_3) + "%")
-
-bellingham4, min_diff_4 = similar_pearson(mids, 68)
-print(bellingham4)
-print("Highest pearson correlance: " + str(100 * min_diff_4) + "%")
+# mids = gd.get_mids()
+#
+# bellingham1, min_diff_1 = similar_manhattan(mids, 68)
+# print(bellingham1)
+# print("Lowest manhattan difference: " + str(100 * min_diff_1) + "%")
+#
+# bellingham2, min_diff_2 = similar_avg(mids, 68)
+# print(bellingham2)
+# print("Lowest average difference: " + str(100 * min_diff_2) + "%")
+#
+# bellingham3, min_diff_3 = similar_euclidean(mids, 68)
+# print(bellingham3)
+# print("Lowest euclidean difference: " + str(100 * min_diff_3) + "%")
+#
+# bellingham4, min_diff_4 = similar_pearson(mids, 68)
+# print(bellingham4)
+# print("Highest pearson correlance: " + str(100 * min_diff_4) + "%")
 # TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min

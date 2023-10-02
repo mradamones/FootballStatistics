@@ -88,3 +88,5 @@ def get_fwds():
     #offs = offs.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
     offs = offs.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY', 'CrdR'], how='left')
     return offs.fillna(0)
+
+# TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych
