@@ -15,7 +15,7 @@ class GoalkeepersPanel(QWidget):
         goalkeepers_model = QStandardItemModel(self)
 
         # Przykładowy DataFrame dla panelu "Goalkeepers"
-        goalkeepers_data = get_data.get_gks()
+        #goalkeepers_data = get_data.get_gks()
         goalkeepers_model.setHorizontalHeaderLabels(goalkeepers_data.columns)
 
         # Wypełnienie tabeli danymi z DataFrame

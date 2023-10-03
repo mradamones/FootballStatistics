@@ -19,6 +19,9 @@ class FieldPlayersPanel(QWidget):
         self.column_selector = QComboBox()  # ComboBox do wyboru kolumn
         layout.addWidget(self.column_selector)
 
+        self.table_view = QTableView()
+        layout.addWidget(self.table_view)
+
         self.setLayout(layout)
 
         # Tutaj możesz dodać kod do wczytywania danych do tabeli lub inne operacje

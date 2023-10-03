@@ -28,7 +28,7 @@ class ComparePanel(QWidget):
         # Tutaj możesz dodać kod do wczytywania danych do tabeli lub inne operacje
 
         # Pobierz dane (np. z funkcji get_data)
-        data = gd.get_data()  # Zakładam, że masz funkcję get_data do wczytania danych
+        #data = gd.get_mids()  # Zakładam, że masz funkcję get_data do wczytania danych
 
         # Utwórz model dla tabeli
         self.model = QStandardItemModel(self)
@@ -43,7 +43,7 @@ class ComparePanel(QWidget):
         self.table_view.setModel(self.model)  # Ustaw model tabeli
 
         # Wypełnij tabelę danymi
-        for _, row in data[selected_columns].iterrows():
+        for _, row in midfielders_data[selected_columns].iterrows():
             row_items = [QStandardItem(str(row[column_name])) for column_name in selected_columns]
             self.model.appendRow(row_items)
 
