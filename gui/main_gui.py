@@ -6,7 +6,6 @@ from goalkeepers_panel import GoalkeepersPanel
 from field_players_panel import FieldPlayersPanel
 from compare_panel import ComparePanel
 from utils import get_data as gd
-import time
 import pickle
 
 
@@ -47,11 +46,8 @@ class DataDialog(QDialog):
     def on_download_clicked(self):
         goalkeeping, adv_goalkeeping, play_time, misc, standard, passing, pass_types, defense, possession, shooting, creation = gd.get_all_tables()
         goalkeepers_data = gd.get_gks(goalkeeping, adv_goalkeeping, misc, play_time)
-        time.sleep(1)  # Opóźnienie 1 sekundy
         defenders_data = gd.get_def(standard, passing, pass_types, defense, possession, misc, play_time)
-        time.sleep(1)  # Opóźnienie 1 sekundy
         midfielders_data = gd.get_mids(standard, shooting, passing, pass_types, creation, defense, possession, misc, play_time)
-        time.sleep(1)  # Opóźnienie 1 sekundy
         forwards_data = gd.get_fwds(standard, shooting, passing, pass_types, creation, possession, misc, play_time)
         goalkeepers_pickle = open('../data/goalkeepers', 'wb')
         pickle.dump(goalkeepers_data, goalkeepers_pickle)
@@ -116,8 +112,6 @@ class MainWindow(QMainWindow):
         self.stacked_widget = QStackedWidget()
         layout.addWidget(self.stacked_widget)
 
-        # TODO - użyć pickle do zapisania dataframeów i żeby ładowało z pliku, a w programie w menu kontekstowym dać pobierz najnowsze i nadpisać pliki pickle
-
         self.main_menu_panel = MainMenuPanel()
         self.stacked_widget.addWidget(self.main_menu_panel)
 
@@ -152,3 +146,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# TODO - add progressbar

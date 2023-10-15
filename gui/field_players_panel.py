@@ -23,15 +23,10 @@ class FieldPlayersPanel(QWidget):
         layout.addWidget(self.table_view)
 
         self.setLayout(layout)
-
-        # Tutaj możesz dodać kod do wczytywania danych do tabeli lub inne operacje
-
-        # Utwórz model dla tabeli
         self.model = QStandardItemModel(self)
+        self.selected_data = self.defenders_data
 
-        # Domyślnie wybierz pierwszy zbiór danych
-        self.selected_data = self.midfielders_data
-
+        self.column_selector.addItem("Defenders")
         self.column_selector.addItem("Midfielders")
         self.column_selector.addItem("Forwards")
         self.column_selector.currentIndexChanged.connect(self.update_table)
@@ -41,17 +36,25 @@ class FieldPlayersPanel(QWidget):
     def update_table(self):
         selected_data = self.selected_data
 
-        # Oczyść model
         self.model.clear()
 
-        # Wybierz interesujące cię kolumny i dodaj je do ComboBox i modelu
-        selected_columns = ["Player", "Nation", "Squad"]  # Tutaj podaj nazwy kolumn
+        selected_columns = []
+
+        if self.column_selector.currentText() == "Defenders":
+            selected_data = self.defenders_data
+            selected_columns = selected_data.columns.tolist()
+        elif self.column_selector.currentText() == "Midfielders":
+            selected_data = self.midfielders_data
+            selected_columns = selected_data.columns.tolist()
+        elif self.column_selector.currentText() == "Forwards":
+            selected_data = self.forwards_data
+            selected_columns = selected_data.columns.tolist()
 
         for column_name in selected_columns:
             self.model.setHorizontalHeaderItem(self.model.columnCount(), QStandardItem(column_name))  # Dodaj do modelu
 
         # Wypełnij tabelę danymi z wybranego zbioru danych
-        for _, row in selected_data[selected_columns].iterrows():
+        for _, row in selected_data.iterrows():
             row_items = [QStandardItem(str(row[column_name])) for column_name in selected_columns]
             self.model.appendRow(row_items)
 

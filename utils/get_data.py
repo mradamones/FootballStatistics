@@ -127,3 +127,5 @@ def get_fwds(standard, shooting, passing, pass_types, creation, possession, misc
     return offs.fillna(0)
 
 # TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych
+# TODO - klasyfikator
+# TODO - PCA dla cech najważniejszych

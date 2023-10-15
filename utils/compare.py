@@ -53,12 +53,13 @@ def similar_pearson(tab, idx):
             avg_sample = normalized.loc[idx].mean()
             avg_current = normalized.loc[i].mean()
             pearson = ((normalized.loc[idx] - avg_sample) * (normalized.loc[i] - avg_current)).sum() / (
-                        len(normalized.columns) - 1)
+                    len(normalized.columns) - 1)
             abs_pearson = abs(pearson)
             if abs_pearson > max_pearson:
                 max_pearson = abs_pearson
                 winner = tab.iloc[i]
     return winner, max_pearson
+
 
 # TODO - create cosinus similarity
 def similar_avg(tab, idx):
@@ -74,7 +75,6 @@ def similar_avg(tab, idx):
                 min_diff = diff
                 winner = tab.iloc[i]
     return winner, min_diff
-
 
 # mids = gd.get_mids()
 #
@@ -94,3 +94,6 @@ def similar_avg(tab, idx):
 # print(bellingham4)
 # print("Highest pearson correlance: " + str(100 * min_diff_4) + "%")
 # TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min
+# TODO - pobierać zdjęcia do comparision zawodników
+# TODO - flagi
+# TODO - klasyfikator

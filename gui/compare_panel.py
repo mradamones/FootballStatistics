@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QComboBox
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 import pandas as pd
-from utils import get_data as gd  # Importowanie funkcji get_data
+from utils import get_data as gd
 
 
 class ComparePanel(QWidget):
