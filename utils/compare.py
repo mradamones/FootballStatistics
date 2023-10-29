@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from utils import get_data as gd
 
 
@@ -61,7 +62,6 @@ def similar_pearson(tab, idx):
     return winner, max_pearson
 
 
-# TODO - create cosinus similarity
 def similar_avg(tab, idx):
     sample = tab.loc[idx]
     print(sample)
@@ -76,7 +76,29 @@ def similar_avg(tab, idx):
                 winner = tab.iloc[i]
     return winner, min_diff
 
-# mids = gd.get_mids()
+
+def similar_cosine(tab, idx):
+    sample = tab.loc[idx]
+    print(sample)
+    winner = 0
+    min_diff = -1
+    normalized = normalize(tab)
+    for i in range(len(tab)):
+        if i != idx:
+            sam = normalized.loc[i]
+            comp = normalized.loc[i]
+            dot_product = np.dot(sam, comp)
+            norm1 = np.linalg.norm(sam)
+            norm2 = np.linalg.norm(comp)
+            diff = dot_product / (norm1 * norm2)
+            if diff > min_diff:
+                min_dif = diff
+                winner = tab.iloc[i]
+    return winner, min_dif
+
+
+# goalkeeping, adv_goalkeeping, play_time, misc, standard, passing, pass_types, defense, possession, shooting, creation = gd.get_all_tables()
+# mids = gd.get_mids(standard, shooting, passing, pass_types, creation, defense, possession, misc, play_time)
 #
 # bellingham1, min_diff_1 = similar_manhattan(mids, 68)
 # print(bellingham1)
@@ -93,6 +115,11 @@ def similar_avg(tab, idx):
 # bellingham4, min_diff_4 = similar_pearson(mids, 68)
 # print(bellingham4)
 # print("Highest pearson correlance: " + str(100 * min_diff_4) + "%")
+
+# bellingham5, min_diff_5 = similar_cosine(mids, 68)
+# print(bellingham5)
+# print("Highest cosine similarity: " + str(100*((min_diff_5 + 1)/2)) + "%")
+
 # TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min
 # TODO - pobierać zdjęcia do comparision zawodników
 # TODO - flagi

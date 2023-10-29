@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QStackedWidget, QHBoxLayout, \
-    QDialog, QLabel
+    QDialog, QLabel, QProgressBar
 from main_menu_panel import MainMenuPanel
 from goalkeepers_panel import GoalkeepersPanel
 from field_players_panel import FieldPlayersPanel
@@ -40,8 +40,11 @@ class DataDialog(QDialog):
         forwards_pickle = open('../data/forwards', 'rb')
         forwards_data = pickle.load(forwards_pickle)
         forwards_pickle.close()
+        field_pickle = open('../data/fields', 'rb')
+        field_data = pickle.load(field_pickle)
+        field_pickle.close()
         self.accept()
-        return goalkeepers_data, defenders_data, midfielders_data, forwards_data
+        return goalkeepers_data, defenders_data, midfielders_data, forwards_data, field_data
 
     def on_download_clicked(self):
         goalkeeping, adv_goalkeeping, play_time, misc, standard, passing, pass_types, defense, possession, shooting, creation = gd.get_all_tables()
@@ -49,6 +52,7 @@ class DataDialog(QDialog):
         defenders_data = gd.get_def(standard, passing, pass_types, defense, possession, misc, play_time)
         midfielders_data = gd.get_mids(standard, shooting, passing, pass_types, creation, defense, possession, misc, play_time)
         forwards_data = gd.get_fwds(standard, shooting, passing, pass_types, creation, possession, misc, play_time)
+        fields_data = gd.get_field(standard, shooting, passing, pass_types, creation, defense, possession, misc, play_time)
         goalkeepers_pickle = open('../data/goalkeepers', 'wb')
         pickle.dump(goalkeepers_data, goalkeepers_pickle)
         goalkeepers_pickle.close()
@@ -61,8 +65,11 @@ class DataDialog(QDialog):
         forwards_pickle = open('../data/forwards', 'wb')
         pickle.dump(forwards_data, forwards_pickle)
         forwards_pickle.close()
+        fields_pickle = open('../data/fields', 'wb')
+        pickle.dump(fields_data, fields_pickle)
+        fields_pickle.close()
         self.reject()
-        return goalkeepers_data, defenders_data, midfielders_data, forwards_data
+        return goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data
 
 
 class MainWindow(QMainWindow):
@@ -72,13 +79,13 @@ class MainWindow(QMainWindow):
         dialog = DataDialog()
 
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            goalkeepers_data, defenders_data, midfielders_data, forwards_data = dialog.on_load_clicked()
-            self.initUI(goalkeepers_data, defenders_data, midfielders_data, forwards_data)
+            goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data = dialog.on_load_clicked()
+            self.initUI(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)
         else:
-            goalkeepers_data, defenders_data, midfielders_data, forwards_data = dialog.on_download_clicked()
-            self.initUI(goalkeepers_data, defenders_data, midfielders_data, forwards_data)
+            goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data = dialog.on_download_clicked()
+            self.initUI(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)
 
-    def initUI(self, goalkeepers_data, defenders_data, midfielders_data, forwards_data):
+    def initUI(self, goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data):
         self.setGeometry(100, 100, 800, 600)
         self.setWindowTitle('FootballStatistics')
         self.showMaximized()
@@ -121,7 +128,7 @@ class MainWindow(QMainWindow):
         self.field_players_panel = FieldPlayersPanel(defenders_data, midfielders_data, forwards_data)
         self.stacked_widget.addWidget(self.field_players_panel)
 
-        self.compare_panel = ComparePanel(defenders_data, midfielders_data, forwards_data)
+        self.compare_panel = ComparePanel(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)
         self.stacked_widget.addWidget(self.compare_panel)
 
     def show_main_menu(self):
@@ -146,5 +153,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# TODO - add progressbar

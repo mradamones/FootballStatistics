@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QGridLayout, QTableVie
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
 import pandas as pd
 
+
 class MainMenuPanel(QWidget):
     def __init__(self):
         super().__init__()

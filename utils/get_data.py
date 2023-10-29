@@ -126,6 +126,26 @@ def get_fwds(standard, shooting, passing, pass_types, creation, possession, misc
                       how='left')
     return offs.fillna(0)
 
+
+def get_field(standard, shooting, passing, pass_types, creation, defense, possession, misc, play_time):
+    misc = misc.drop(columns=['Crs', 'Int', 'TklW'])
+    fields = standard.loc[~standard['Pos'].str.contains('GK')]
+    fields = fields.merge(shooting, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s',
+                                        'Gls', 'PK', 'PKattOff', 'xG', 'npxG'], how='left')
+    fields = fields.merge(passing, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'Ast',
+                                       'xAG', 'PrgP'], how='left')
+    fields = fields.merge(pass_types, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'],
+                          how='left')
+    fields = fields.merge(creation, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'],
+                          how='left')
+    fields = fields.merge(defense, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'],
+                          how='left')
+    fields = fields.merge(possession, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s',
+                                          'PrgC', 'PrgR'], how='left')
+    # fields = fields.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
+    fields = fields.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY',
+                                    'CrdR'], how='left')
+
 # TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych
 # TODO - klasyfikator
 # TODO - PCA dla cech najważniejszych

@@ -3,6 +3,7 @@ from PyQt6.QtGui import QStandardItemModel, QStandardItem
 import pandas as pd
 from utils import get_data
 
+
 class GoalkeepersPanel(QWidget):
     def __init__(self, goalkeepers_data):
         super().__init__()
@@ -15,7 +16,7 @@ class GoalkeepersPanel(QWidget):
         goalkeepers_model = QStandardItemModel(self)
 
         # Przykładowy DataFrame dla panelu "Goalkeepers"
-        #goalkeepers_data = get_data.get_gks()
+        # goalkeepers_data = get_data.get_gks()
         goalkeepers_model.setHorizontalHeaderLabels(goalkeepers_data.columns)
 
         # Wypełnienie tabeli danymi z DataFrame
