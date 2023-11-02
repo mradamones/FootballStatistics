@@ -145,6 +145,7 @@ def get_field(standard, shooting, passing, pass_types, creation, defense, posses
     # fields = fields.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
     fields = fields.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY',
                                     'CrdR'], how='left')
+    return fields.fillna(0)
 
 # TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych
 # TODO - klasyfikator

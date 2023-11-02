@@ -1,6 +1,8 @@
 import sys
+
+from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QStackedWidget, QHBoxLayout, \
-    QDialog, QLabel, QProgressBar
+    QDialog, QLabel
 from main_menu_panel import MainMenuPanel
 from goalkeepers_panel import GoalkeepersPanel
 from field_players_panel import FieldPlayersPanel
@@ -20,12 +22,17 @@ class DataDialog(QDialog):
         layout.addWidget(label)
 
         load_button = QPushButton('Załaduj z pliku')
-        load_button.clicked.connect(self.accept)
+        load_button.clicked.connect(self.reject)
         layout.addWidget(load_button)
 
         download_button = QPushButton('Pobierz najnowsze')
         download_button.clicked.connect(self.on_download_clicked)
         layout.addWidget(download_button)
+
+        primary_screen = QGuiApplication.primaryScreen()
+        screen_geometry = primary_screen.availableGeometry()
+        #self.move(int(screen_geometry.x()), int(screen_geometry.y()))
+        self.move(100, 0)
 
     def on_load_clicked(self):
         goalkeepers_pickle = open('../data/goalkeepers', 'rb')
@@ -40,11 +47,11 @@ class DataDialog(QDialog):
         forwards_pickle = open('../data/forwards', 'rb')
         forwards_data = pickle.load(forwards_pickle)
         forwards_pickle.close()
-        field_pickle = open('../data/fields', 'rb')
-        field_data = pickle.load(field_pickle)
-        field_pickle.close()
-        self.accept()
-        return goalkeepers_data, defenders_data, midfielders_data, forwards_data, field_data
+        fields_pickle = open('../data/fields', 'rb')
+        fields_data = pickle.load(fields_pickle)
+        fields_pickle.close()
+        self.reject()
+        return goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data
 
     def on_download_clicked(self):
         goalkeeping, adv_goalkeeping, play_time, misc, standard, passing, pass_types, defense, possession, shooting, creation = gd.get_all_tables()
@@ -78,7 +85,7 @@ class MainWindow(QMainWindow):
 
         dialog = DataDialog()
 
-        if dialog.exec() == QDialog.DialogCode.Accepted:
+        if dialog.exec() == QDialog.DialogCode.Rejected:
             goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data = dialog.on_load_clicked()
             self.initUI(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)
         else:
@@ -125,7 +132,7 @@ class MainWindow(QMainWindow):
         self.goalkeepers_panel = GoalkeepersPanel(goalkeepers_data)
         self.stacked_widget.addWidget(self.goalkeepers_panel)
 
-        self.field_players_panel = FieldPlayersPanel(defenders_data, midfielders_data, forwards_data)
+        self.field_players_panel = FieldPlayersPanel(defenders_data, midfielders_data, forwards_data, fields_data)
         self.stacked_widget.addWidget(self.field_players_panel)
 
         self.compare_panel = ComparePanel(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)

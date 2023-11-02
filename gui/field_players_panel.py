@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class FieldPlayersPanel(QWidget):
-    def __init__(self, defenders_data, midfielders_data, forwards_data):
+    def __init__(self, defenders_data, midfielders_data, forwards_data, fields_data):
         super().__init__()
 
         layout = QVBoxLayout()
@@ -15,6 +15,7 @@ class FieldPlayersPanel(QWidget):
         self.defenders_data = defenders_data
         self.midfielders_data = midfielders_data
         self.forwards_data = forwards_data
+        self.fields_data = fields_data
 
         self.column_selector = QComboBox()  # ComboBox do wyboru kolumn
         layout.addWidget(self.column_selector)
@@ -29,6 +30,7 @@ class FieldPlayersPanel(QWidget):
         self.column_selector.addItem("Defenders")
         self.column_selector.addItem("Midfielders")
         self.column_selector.addItem("Forwards")
+        self.column_selector.addItem("All field players")
         self.column_selector.currentIndexChanged.connect(self.update_table)
 
         self.update_table()
@@ -48,6 +50,9 @@ class FieldPlayersPanel(QWidget):
             selected_columns = selected_data.columns.tolist()
         elif self.column_selector.currentText() == "Forwards":
             selected_data = self.forwards_data
+            selected_columns = selected_data.columns.tolist()
+        elif self.column_selector.currentText() == "All field players":
+            selected_data = self.fields_data
             selected_columns = selected_data.columns.tolist()
 
         for column_name in selected_columns:
