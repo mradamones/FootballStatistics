@@ -1,14 +1,12 @@
+import pickle
 import sys
-
-from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QStackedWidget, QHBoxLayout, \
     QDialog, QLabel
-from main_menu_panel import MainMenuPanel
-from goalkeepers_panel import GoalkeepersPanel
-from field_players_panel import FieldPlayersPanel
 from compare_panel import ComparePanel
+from field_players_panel import FieldPlayersPanel
+from goalkeepers_panel import GoalkeepersPanel
+from main_menu_panel import MainMenuPanel
 from utils import get_data as gd
-import pickle
 
 
 class DataDialog(QDialog):
@@ -29,9 +27,6 @@ class DataDialog(QDialog):
         download_button.clicked.connect(self.on_download_clicked)
         layout.addWidget(download_button)
 
-        primary_screen = QGuiApplication.primaryScreen()
-        screen_geometry = primary_screen.availableGeometry()
-        #self.move(int(screen_geometry.x()), int(screen_geometry.y()))
         self.move(100, 0)
 
     def on_load_clicked(self):

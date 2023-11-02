@@ -1,6 +1,5 @@
-import pandas as pd
 import numpy as np
-from utils import get_data as gd
+import pandas as pd
 
 
 def normalize(tab):
@@ -50,7 +49,6 @@ def similar_pearson(tab, idx):
     normalized = normalize(tab)
     for i in range(len(tab)):
         if i != idx:
-            # pearson = pow((normalized.loc[idx] - normalized.loc[i]), 2)
             avg_sample = normalized.loc[idx].mean()
             avg_current = normalized.loc[i].mean()
             pearson = ((normalized.loc[idx] - avg_sample) * (normalized.loc[i] - avg_current)).sum() / (

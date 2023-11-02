@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QComboBox
+from PyQt6 import QtWidgets
 from PyQt6.QtGui import QStandardItemModel, QStandardItem
-import pandas as pd
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QComboBox
 
 
 class FieldPlayersPanel(QWidget):
@@ -17,10 +17,11 @@ class FieldPlayersPanel(QWidget):
         self.forwards_data = forwards_data
         self.fields_data = fields_data
 
-        self.column_selector = QComboBox()  # ComboBox do wyboru kolumn
+        self.column_selector = QComboBox()
         layout.addWidget(self.column_selector)
 
         self.table_view = QTableView()
+        self.table_view.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         layout.addWidget(self.table_view)
 
         self.setLayout(layout)
@@ -58,12 +59,8 @@ class FieldPlayersPanel(QWidget):
         for column_name in selected_columns:
             self.model.setHorizontalHeaderItem(self.model.columnCount(), QStandardItem(column_name))  # Dodaj do modelu
 
-        # Wypełnij tabelę danymi z wybranego zbioru danych
         for _, row in selected_data.iterrows():
             row_items = [QStandardItem(str(row[column_name])) for column_name in selected_columns]
             self.model.appendRow(row_items)
-
-        self.table_view.setModel(self.model)  # Ustaw model tabeli
-
-        # Automatyczne dostosowanie szerokości kolumn
+        self.table_view.setModel(self.model)
         self.table_view.resizeColumnsToContents()

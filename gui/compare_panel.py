@@ -1,8 +1,10 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QComboBox, QDialog, QRadioButton, QButtonGroup, \
-    QPushButton, QTextBrowser, QHBoxLayout, QHeaderView
+from PyQt6 import QtWidgets
 from PyQt6.QtGui import QStandardItemModel, QStandardItem, QGuiApplication
-import pandas as pd
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QDialog, QRadioButton, QButtonGroup, \
+    QPushButton, QHBoxLayout, QHeaderView
+
 from utils import compare as cmp
+
 
 class ComparePanel(QWidget):
     def __init__(self, goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data):
@@ -21,6 +23,7 @@ class ComparePanel(QWidget):
 
         self.table_view = QTableView(self)
         layout.addWidget(self.table_view)
+        self.table_view.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
 
         self.setLayout(layout)
 
@@ -34,13 +37,12 @@ class ComparePanel(QWidget):
             row_items = [QStandardItem(str(row[column_name])) for column_name in selected_columns]
             self.model.appendRow(row_items)
 
-        #self.table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
-        # Ustawić flagi kolumn jako niezmienne
         for column_index in range(self.model.columnCount()):
             self.table_view.horizontalHeader().setSectionResizeMode(column_index, QHeaderView.ResizeMode.Stretch)
             self.table_view.setColumnWidth(column_index, self.table_view.columnWidth(0))
 
         self.table_view.doubleClicked.connect(self.show_radio_buttons)
+
     # TODO - add flags as icons (github flag-icons)
     def show_radio_buttons(self, index):
         dialog = QDialog(self)
@@ -51,7 +53,7 @@ class ComparePanel(QWidget):
 
         x = (screen_geometry.width() - dialog_size.width()) / 2
         y = (screen_geometry.height() - dialog_size.height()) / 2
-        dialog.move(int(x), int(y)-200)
+        dialog.move(int(x), int(y) - 200)
 
         layout = QVBoxLayout(dialog)
 
@@ -86,7 +88,7 @@ class ComparePanel(QWidget):
             row_number = current_index.row()
 
             selected_row = self.fields_data.iloc[row_number]
-            series1 = selected_row  # Przykładowa seria z danymi z wiersza
+            series1 = selected_row
 
             if selected_option == 0:
                 print("Selected Manhattan similarity")
@@ -106,21 +108,16 @@ class ComparePanel(QWidget):
 
             dialog.close()
 
-            # Tworzenie nowego okna z dwiema tabelami
             result_dialog = QDialog(self)
             result_dialog.setWindowTitle("Comparison Results")
             result_dialog.resize(800, 400)
             screen = QGuiApplication.primaryScreen()
             screen_geometry = screen.availableGeometry()
             dialog_size = result_dialog.size()
-
             x = (screen_geometry.width() - dialog_size.width()) / 2
             y = (screen_geometry.height() - dialog_size.height()) / 2
-
-            result_dialog.move(int(x)-400, int(y)-200)
-
+            result_dialog.move(int(x) - 400, int(y) - 200)
             layout = QVBoxLayout(result_dialog)
-
             result_table1 = QTableView(result_dialog)
             result_table2 = QTableView(result_dialog)
             result_table1.horizontalHeader().setStretchLastSection(True)
@@ -133,13 +130,11 @@ class ComparePanel(QWidget):
             result_model1 = QStandardItemModel(result_dialog)
             result_model2 = QStandardItemModel(result_dialog)
 
-            # Umieść wyniki z series1 w result_model1
             for key, value in series1.items():
                 key_item = QStandardItem(str(key))
                 value_item = QStandardItem(str(value))
                 result_model1.appendRow([key_item, value_item])
 
-                # Umieść wyniki z series2 w result_model2
             for key, value in series2.items():
                 key_item = QStandardItem(str(key))
                 value_item = QStandardItem(str(value))
@@ -148,16 +143,12 @@ class ComparePanel(QWidget):
             result_table1.setModel(result_model1)
             result_table2.setModel(result_model2)
 
-            # Przycisk OK na nowym oknie
             ok_button = QPushButton("OK")
             layout.addWidget(ok_button)
             ok_button.clicked.connect(result_dialog.accept)
-
             result_dialog.exec()
 
-        # Przycisk OK na oryginalnym oknie
         ok_button = QPushButton("OK")
         layout.addWidget(ok_button)
         ok_button.clicked.connect(accept_dialog)
-
         dialog.exec()
