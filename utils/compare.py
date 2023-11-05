@@ -6,18 +6,19 @@ def normalize(tab):
     numeric = tab.apply(pd.to_numeric, errors='coerce')
     numeric = numeric.dropna(axis=1)
     numeric = (numeric - numeric.min()) / (numeric.max() - numeric.min())
+    numeric = numeric.fillna(0)
     return numeric
 
 
 def similar_manhattan(tab, idx):
-    sample = tab.loc[idx]
-    print(sample)
     winner = 0
     min_diff = 1
     normalized = normalize(tab)
-    for i in range(len(tab)):
-        if not tab.iloc[i].equals(tab.iloc[idx]):
-            diff = (normalized.loc[idx] - normalized.loc[i]).abs()
+    for i in range(len(normalized)):
+        if i != idx:
+            sample = normalized.iloc[idx]
+            other = normalized.iloc[i]
+            diff = (sample - other).abs()
             avg_diff = diff.mean()
             if avg_diff < min_diff:
                 min_diff = avg_diff
@@ -26,14 +27,12 @@ def similar_manhattan(tab, idx):
 
 
 def similar_euclidean(tab, idx):
-    sample = tab.loc[idx]
-    print(sample)
     winner = 0
     min_diff = 1
     normalized = normalize(tab)
     for i in range(len(tab)):
         if not tab.iloc[i].equals(tab.iloc[idx]):
-            diff = pow((normalized.loc[idx] - normalized.loc[i]), 2)
+            diff = pow((normalized.iloc[idx] - normalized.iloc[i]), 2)
             avg_diff = diff.mean()
             if avg_diff < min_diff:
                 min_diff = avg_diff
@@ -42,16 +41,14 @@ def similar_euclidean(tab, idx):
 
 
 def similar_pearson(tab, idx):
-    sample = tab.loc[idx]
-    print(sample)
     winner = 0
     max_pearson = 0
     normalized = normalize(tab)
     for i in range(len(tab)):
         if i != idx:
-            avg_sample = normalized.loc[idx].mean()
-            avg_current = normalized.loc[i].mean()
-            pearson = ((normalized.loc[idx] - avg_sample) * (normalized.loc[i] - avg_current)).sum() / (
+            avg_sample = normalized.iloc[idx].mean()
+            avg_current = normalized.iloc[i].mean()
+            pearson = ((normalized.iloc[idx] - avg_sample) * (normalized.iloc[i] - avg_current)).sum() / (
                     len(normalized.columns) - 1)
             abs_pearson = abs(pearson)
             if abs_pearson > max_pearson:
@@ -61,8 +58,6 @@ def similar_pearson(tab, idx):
 
 
 def similar_avg(tab, idx):
-    sample = tab.loc[idx]
-    print(sample)
     winner = 0
     min_diff = 1
     normalized = normalize(tab)
@@ -76,23 +71,21 @@ def similar_avg(tab, idx):
 
 
 def similar_cosine(tab, idx):
-    sample = tab.loc[idx]
-    print(sample)
     winner = 0
     min_diff = -1
     normalized = normalize(tab)
     for i in range(len(tab)):
         if i != idx:
-            sam = normalized.loc[i]
-            comp = normalized.loc[i]
+            sam = normalized.iloc[i]
+            comp = normalized.iloc[i]
             dot_product = np.dot(sam, comp)
             norm1 = np.linalg.norm(sam)
             norm2 = np.linalg.norm(comp)
             diff = dot_product / (norm1 * norm2)
             if diff > min_diff:
-                min_dif = diff
+                min_diff = diff
                 winner = tab.iloc[i]
-    return winner, min_dif
+    return winner, min_diff
 
 
 # goalkeeping, adv_goalkeeping, play_time, misc, standard, passing, pass_types, defense, possession, shooting, creation = gd.get_all_tables()
@@ -119,6 +112,4 @@ def similar_cosine(tab, idx):
 # print("Highest cosine similarity: " + str(100*((min_diff_5 + 1)/2)) + "%")
 
 # TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min
-# TODO - pobierać zdjęcia do comparision zawodników
 # TODO - flagi
-# TODO - klasyfikator

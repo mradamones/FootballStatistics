@@ -37,6 +37,8 @@ def get_gks(goalkeeping, adv_goalkeeping, misc, play_time):
     gks = gks.loc[:, ~gks.columns.duplicated()]
     gks.pop('Rk_y')
     gks = gks.rename(columns={'Rk_x': 'Rk'})
+    gks['Nation'] = gks['Nation'].str.split(n=1).str.get(1)
+    gks['Comp'] = gks['Comp'].str.split(n=1).str.get(1)
     return gks.fillna(0)
 
 
@@ -55,6 +57,8 @@ def get_def(standard, passing, pass_types, defense, possession, misc, play_time)
     # defs = defs.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left') #check joining
     defs = defs.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY', 'CrdR'],
                       how='left')
+    defs['Nation'] = defs['Nation'].str.split(n=1).str.get(1)
+    defs['Comp'] = defs['Comp'].str.split(n=1).str.get(1)
     return defs.fillna(0)
 
 
@@ -76,6 +80,8 @@ def get_mids(standard, shooting, passing, pass_types, creation, defense, possess
     # mids = mids.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
     mids = mids.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY', 'CrdR'],
                       how='left')
+    mids['Nation'] = mids['Nation'].str.split(n=1).str.get(1)
+    mids['Comp'] = mids['Comp'].str.split(n=1).str.get(1)
     return mids.fillna(0)
 
 
@@ -96,6 +102,8 @@ def get_fwds(standard, shooting, passing, pass_types, creation, possession, misc
     # offs = offs.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
     offs = offs.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY', 'CrdR'],
                       how='left')
+    offs['Nation'] = offs['Nation'].str.split(n=1).str.get(1)
+    offs['Comp'] = offs['Comp'].str.split(n=1).str.get(1)
     return offs.fillna(0)
 
 
@@ -117,8 +125,10 @@ def get_field(standard, shooting, passing, pass_types, creation, defense, posses
     # fields = fields.merge(play_time, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s'], how='left')
     fields = fields.merge(misc, on=['Rk', 'Player', 'Nation', 'Pos', 'Squad', 'Comp', 'Age', 'Born', '90s', 'CrdY',
                                     'CrdR'], how='left')
+    fields['Nation'] = fields['Nation'].str.split(n=1).str.get(1)
+    fields['Comp'] = fields['Comp'].str.split(n=1).str.get(1)
     return fields.fillna(0)
 
-# TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych
+# TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych)
 # TODO - klasyfikator
 # TODO - PCA dla cech najważniejszych

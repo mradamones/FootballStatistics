@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
         self.field_players_panel = FieldPlayersPanel(defenders_data, midfielders_data, forwards_data, fields_data)
         self.stacked_widget.addWidget(self.field_players_panel)
 
-        self.compare_panel = ComparePanel(goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data)
+        self.compare_panel = ComparePanel(goalkeepers_data, fields_data)
         self.stacked_widget.addWidget(self.compare_panel)
 
     def show_main_menu(self):
