@@ -69,7 +69,7 @@ def similar_avg(tab, idx):
                 winner = tab.iloc[i]
     return winner, min_diff
 
-
+#ewaluacja przed implementacją
 def similar_cosine(tab, idx):
     winner = 0
     min_diff = -1
@@ -112,4 +112,3 @@ def similar_cosine(tab, idx):
 # print("Highest cosine similarity: " + str(100*((min_diff_5 + 1)/2)) + "%")
 
 # TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min
-# TODO - flagi

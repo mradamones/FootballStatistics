@@ -48,7 +48,3 @@ def get_pca(n):
 # plt.title('Scree Plot')
 # plt.show()
 # print(param)
-
-
-#print(new_data)
-# TODO - wybrac N nowych wartosci i stworzyc na ich podstawie klasyfikator

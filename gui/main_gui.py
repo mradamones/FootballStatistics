@@ -6,6 +6,7 @@ from compare_panel import ComparePanel
 from field_players_panel import FieldPlayersPanel
 from goalkeepers_panel import GoalkeepersPanel
 from main_menu_panel import MainMenuPanel
+from position_panel import PositionPanel
 from utils import get_data as gd
 
 
@@ -116,6 +117,10 @@ class MainWindow(QMainWindow):
         compare_button.clicked.connect(self.show_compare_panel)
         button_layout.addWidget(compare_button)
 
+        position_button = QPushButton('Find ideal position', self)
+        position_button.clicked.connect(self.show_position_panel)
+        button_layout.addWidget(position_button)
+
         layout.addLayout(button_layout)
 
         self.stacked_widget = QStackedWidget()
@@ -133,6 +138,9 @@ class MainWindow(QMainWindow):
         self.compare_panel = ComparePanel(goalkeepers_data, fields_data)
         self.stacked_widget.addWidget(self.compare_panel)
 
+        self.position_panel = PositionPanel(fields_data)
+        self.stacked_widget.addWidget(self.position_panel)
+
     def show_main_menu(self):
         self.stacked_widget.setCurrentWidget(self.main_menu_panel)
 
@@ -144,6 +152,9 @@ class MainWindow(QMainWindow):
 
     def show_compare_panel(self):
         self.stacked_widget.setCurrentWidget(self.compare_panel)
+
+    def show_position_panel(self):
+        self.stacked_widget.setCurrentWidget(self.position_panel)
 
 
 def main():

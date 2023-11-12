@@ -130,5 +130,3 @@ def get_field(standard, shooting, passing, pass_types, creation, defense, posses
     return fields.fillna(0)
 
 # TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych)
-# TODO - klasyfikator
-# TODO - PCA dla cech najważniejszych
