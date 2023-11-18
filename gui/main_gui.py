@@ -7,7 +7,9 @@ from field_players_panel import FieldPlayersPanel
 from goalkeepers_panel import GoalkeepersPanel
 from main_menu_panel import MainMenuPanel
 from position_panel import PositionPanel
+from diagram_panel import DiagramPanel
 from utils import get_data as gd
+from classificator import classes
 
 
 class DataDialog(QDialog):
@@ -71,6 +73,7 @@ class DataDialog(QDialog):
         fields_pickle = open('../data/fields', 'wb')
         pickle.dump(fields_data, fields_pickle)
         fields_pickle.close()
+        classes.save_models()
         self.reject()
         return goalkeepers_data, defenders_data, midfielders_data, forwards_data, fields_data
 
@@ -121,12 +124,16 @@ class MainWindow(QMainWindow):
         position_button.clicked.connect(self.show_position_panel)
         button_layout.addWidget(position_button)
 
+        diagram_button = QPushButton('Draw radar diagram', self)
+        diagram_button.clicked.connect(self.show_diagram_panel)
+        button_layout.addWidget(diagram_button)
+
         layout.addLayout(button_layout)
 
         self.stacked_widget = QStackedWidget()
         layout.addWidget(self.stacked_widget)
 
-        self.main_menu_panel = MainMenuPanel()
+        self.main_menu_panel = MainMenuPanel(goalkeepers_data, fields_data)
         self.stacked_widget.addWidget(self.main_menu_panel)
 
         self.goalkeepers_panel = GoalkeepersPanel(goalkeepers_data)
@@ -140,6 +147,9 @@ class MainWindow(QMainWindow):
 
         self.position_panel = PositionPanel(fields_data)
         self.stacked_widget.addWidget(self.position_panel)
+
+        self.diagram_panel = DiagramPanel(goalkeepers_data, fields_data)
+        self.stacked_widget.addWidget(self.diagram_panel)
 
     def show_main_menu(self):
         self.stacked_widget.setCurrentWidget(self.main_menu_panel)
@@ -155,6 +165,9 @@ class MainWindow(QMainWindow):
 
     def show_position_panel(self):
         self.stacked_widget.setCurrentWidget(self.position_panel)
+
+    def show_diagram_panel(self):
+        self.stacked_widget.setCurrentWidget(self.diagram_panel)
 
 
 def main():

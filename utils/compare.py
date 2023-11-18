@@ -101,7 +101,7 @@ def similar_cosine(tab, idx):
 #
 # bellingham3, min_diff_3 = similar_euclidean(mids, 68)
 # print(bellingham3)
-# print("Lowest euclidean difference: " + str(100 * min_diff_3) + "%")
+# print("Lowest Euclidean difference: " + str(100 * min_diff_3) + "%")
 #
 # bellingham4, min_diff_4 = similar_pearson(mids, 68)
 # print(bellingham4)
@@ -110,5 +110,3 @@ def similar_cosine(tab, idx):
 # bellingham5, min_diff_5 = similar_cosine(mids, 68)
 # print(bellingham5)
 # print("Highest cosine similarity: " + str(100*((min_diff_5 + 1)/2)) + "%")
-
-# TODO - stworzyć kilka jakościowych statystyk, np (CrdY+3*CrdR)/Min

@@ -62,6 +62,7 @@ def save_models():
     pickle.dump(labels, labels_pickle)
     labels_pickle.close()
 
+
 grid_knn = {                                                        # KNeighborsClassifier                      75,70%
     'n_neighbors': [3, 5, 7, 9, 11, 13, 15, 20],                    # 11
     'weights': ['uniform', 'distance'],                             # uniform
@@ -109,4 +110,4 @@ grid_dtc = {                                                        # DecisionTr
 # params, model, acc = fit_parameters(grid_dtc, DecisionTreeClassifier())
 # print("Najlepsze parametry:", params)
 # print("Dokładność modelu: {:.2f}%".format(acc * 100))
-# save_models()
+save_models()

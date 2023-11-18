@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import utils.modify_df as mod
 import pickle
 
 
@@ -14,26 +15,20 @@ def ingest_data():
     return field_players, labels
 
 
-def standardize(array):
-    array = array.apply(pd.to_numeric, errors='coerce')
-    avg = np.mean(array, axis=0)
-    std_dev = np.std(array, axis=0)
-    standardized_array = (array - avg) / std_dev
-    standardized_array = np.round(standardized_array, 3)
-    return standardized_array
-
-
 def covariance_matrix(array):
     cov_matrix = np.cov(array, rowvar=False)
     cov_matrix = np.round(cov_matrix, 3)
+    cov_matrix = np.real_if_close(cov_matrix)
     return cov_matrix
 
 
 def get_pca(n):
     x, labels = ingest_data()
-    x_standard = standardize(x)
+    x_standard = mod.standardize(x)
     cov = covariance_matrix(x_standard)
     param, vec = np.linalg.eig(cov)
+    param = np.real(param)
+    vec = np.real(vec)
     sorted_indices = np.argsort(param)[::-1]
     sorted_eigenvectors = vec[:, sorted_indices]
     selected_eigenvectors = sorted_eigenvectors[:, :n]
@@ -48,3 +43,4 @@ def get_pca(n):
 # plt.title('Scree Plot')
 # plt.show()
 # print(param)
+get_pca(15)
