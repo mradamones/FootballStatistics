@@ -1,3 +1,5 @@
+from math import sqrt
+
 import numpy as np
 import pandas as pd
 
@@ -12,7 +14,7 @@ def normalize(tab):
 
 def similar_manhattan(tab, idx):
     winner = 0
-    min_diff = 1
+    min_diff = float('inf')
     normalized = normalize(tab)
     for i in range(len(normalized)):
         if i != idx:
@@ -31,9 +33,10 @@ def similar_euclidean(tab, idx):
     min_diff = 1
     normalized = normalize(tab)
     for i in range(len(tab)):
-        if not tab.iloc[i].equals(tab.iloc[idx]):
-            diff = pow((normalized.iloc[idx] - normalized.iloc[i]), 2)
-            avg_diff = diff.mean()
+        if i != idx:
+            diff = np.power(normalized.iloc[idx] - normalized.iloc[i], 2)
+            sum_diff = diff.sum()
+            avg_diff = np.sqrt(sum_diff) / len(diff)
             if avg_diff < min_diff:
                 min_diff = avg_diff
                 winner = tab.iloc[i]
@@ -48,35 +51,33 @@ def similar_pearson(tab, idx):
         if i != idx:
             avg_sample = normalized.iloc[idx].mean()
             avg_current = normalized.iloc[i].mean()
-            pearson = ((normalized.iloc[idx] - avg_sample) * (normalized.iloc[i] - avg_current)).sum() / (
-                    len(normalized.columns) - 1)
-            abs_pearson = abs(pearson)
-            if abs_pearson > max_pearson:
-                max_pearson = abs_pearson
+            pearson = ((normalized.iloc[idx] - avg_sample) * (normalized.iloc[i] - avg_current)).sum() / (np.std(normalized.iloc[idx]) * np.std(normalized.iloc[i]))
+            if pearson > max_pearson:
+                max_pearson = pearson
                 winner = tab.iloc[i]
     return winner, max_pearson
 
 
 def similar_avg(tab, idx):
     winner = 0
-    min_diff = 1
+    min_diff = float('inf')
     normalized = normalize(tab)
     for i in range(len(tab)):
-        if not tab.iloc[i].equals(tab.iloc[idx]):
+        if i != idx:
             diff = abs((normalized.iloc[i].mean() - normalized.iloc[idx].mean()))
             if diff < min_diff:
                 min_diff = diff
                 winner = tab.iloc[i]
     return winner, min_diff
 
-#ewaluacja przed implementacją
+
 def similar_cosine(tab, idx):
     winner = 0
     min_diff = -1
     normalized = normalize(tab)
     for i in range(len(tab)):
         if i != idx:
-            sam = normalized.iloc[i]
+            sam = normalized.iloc[idx]
             comp = normalized.iloc[i]
             dot_product = np.dot(sam, comp)
             norm1 = np.linalg.norm(sam)

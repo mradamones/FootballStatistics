@@ -128,5 +128,3 @@ def get_field(standard, shooting, passing, pass_types, creation, defense, posses
     fields['Nation'] = fields['Nation'].str.split(n=1).str.get(1)
     fields['Comp'] = fields['Comp'].str.split(n=1).str.get(1)
     return fields.fillna(0)
-
-# TODO - dopisać pobieranie widoków najlepszych strzelców, g+a, czystych kont/obronionych strzałów, podań, wygranych pojedynków główkowych do main menu (po 10 najlepszych)
