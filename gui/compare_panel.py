@@ -2,7 +2,6 @@ from PyQt6 import QtWidgets
 from PyQt6.QtGui import QStandardItemModel, QStandardItem, QGuiApplication
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QDialog, QRadioButton, QButtonGroup, \
     QPushButton, QHBoxLayout, QHeaderView, QComboBox
-
 from utils import compare as cmp
 
 
@@ -240,5 +239,3 @@ class ComparePanel(QWidget):
 
 # TODO - dodać filtrowanie do goalkeepers i field
 # TODO - panel porównania zawodników (%podobieństwa, wybrane statystyki, pokolorowane na zielono gdy lepszy wynik)
-
-

@@ -31,24 +31,16 @@ class MainMenuPanel(QWidget):
             table_view.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             table_view.setModel(model)
 
-            # Get data using the specified function
             data = data_function
-
-            # Set headers
             model.setHorizontalHeaderLabels(data.columns)
-
-            # Ensure that the model has a fixed number of rows (e.g., 10)
             model.setRowCount(15)
 
-            # Populate the table with data
             for row_index, row_data in enumerate(data.itertuples()):
                 for col_index, cell_value in enumerate(row_data[1:]):
                     item = QStandardItem(str(cell_value) if pd.notna(cell_value) else "")
                     model.setItem(row_index, col_index, item)
 
             table_view.resizeColumnsToContents()
-
-            # Add table to the grid layout
             row = i // 2
             col = i % 2
             grid_layout.addWidget(table_view, row, col)

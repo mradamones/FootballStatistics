@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QTableView, QLabel, QDialog, Q
 from classificator import predictions as pred
 
 
-# spytac, czy skupiac sie na naprawianiu takich rzeczy jak labele kolumn
 class PositionPanel(QWidget):
     def __init__(self, fields_data):
         super().__init__()
@@ -27,7 +26,7 @@ class PositionPanel(QWidget):
 
         selected_columns = ["Player", "Nation", "Squad", "Comp"]
         self.filterButton = QPushButton("Filter")
-        layout.addWidget(self.filterButton)
+        #layout.addWidget(self.filterButton)
         self.filterButton.clicked.connect(self.show_filter_dialog)
 
         self.table_view.setModel(self.model)
